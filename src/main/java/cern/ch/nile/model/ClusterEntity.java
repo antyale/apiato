@@ -1,6 +1,9 @@
 package cern.ch.nile.model;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -13,24 +16,73 @@ import java.util.Map;
  * Created by aromerom on 26.05.17.
  */
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "cluster", schema = "apiato")
-@JsonPropertyOrder(alphabetic=true)
+@JsonPropertyOrder(alphabetic = true)
 public class ClusterEntity {
 
+    @Id
+    @Column(name = "cluster_id")
     private int id;
+
+    @Basic
+    @JsonProperty("username")
     private String owner;
+
+    @Basic
+    @Column(name = "name")
     private String name;
+
+    @Basic
+    @Column(name = "e_group")
+    @JsonProperty("e_group")
     private String eGroup;
+
+    @Basic
+    @Column(name = "creation_date")
+    @JsonIgnore
     private Date creationDate;
+
+    @Basic
+    @Column(name = "expiry_date")
+    @JsonIgnore
     private Date expiryDate;
+
+    @Basic
     private String project;
+
+    @Basic
     private String description;
+
+    @Basic
     private String version;
+
+    @Basic
+    @Column(name = "lb_alias")
+    @JsonProperty("lb_alias")
     private String lbAlias;
+
+    @Enumerated(EnumType.STRING)
     private State state;
+
+    @Enumerated(EnumType.STRING)
+    @JsonProperty("class")
     private Category category;
+
+    @Enumerated(EnumType.STRING)
     private Status status;
+
+    @ElementCollection
+    @MapKeyColumn(name = "name")
+    @Column(name = "value")
+    @CollectionTable(schema = "apiato", name = "cluster_attribute", joinColumns = @JoinColumn(name = "cluster_id"))
+    @JsonPropertyOrder(alphabetic = true)
     private Map<String, String> attributes = new HashMap<String, String>();
+
+    @OneToMany(mappedBy = "cluster")
+    @JsonManagedReference
     private Collection<InstanceEntity> instances;
 
 
@@ -70,173 +122,13 @@ public class ClusterEntity {
         return result;
     }
 
-    @Id
-    @Column(name = "cluster_id")
-    @JsonProperty("id")
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int clusterId) {
-        this.id = clusterId;
-    }
-
-    @Basic
-    @Column(name = "owner")
-    @JsonProperty("username")
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    @Basic
-    @Column(name = "name")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Basic
-    @Column(name = "e_group")
-    @JsonProperty("e_group")
-    public String geteGroup() {
-        return eGroup;
-    }
-
-    public void seteGroup(String eGroup) {
-        this.eGroup = eGroup;
-    }
-
-    @Basic
-    @Column(name = "creation_date")
-    @JsonIgnore
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    @Basic
-    @Column(name = "expiry_date")
-    @JsonIgnore
-    public Date getExpiryDate() {
-        return expiryDate;
-    }
-
-    public void setExpiryDate(Date expiryDate) {
-        this.expiryDate = expiryDate;
-    }
-
-    @Basic
-    @Column(name = "project")
-    public String getProject() {
-        return project;
-    }
-
-    public void setProject(String project) {
-        this.project = project;
-    }
-
-    @Basic
-    @Column(name = "description")
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-
-    @Basic
-    @Column(name = "version")
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    @Basic
-    @Column(name = "lb_alias")
-    @JsonProperty("lb_alias")
-    public String getLbAlias() {
-        return lbAlias;
-    }
-
-    public void setLbAlias(String lbAlias) {
-        this.lbAlias = lbAlias;
-    }
-
-    @Enumerated(EnumType.STRING)
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    @Enumerated(EnumType.STRING)
-    @JsonProperty("class")
-    @Column(name = "category")
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    @Enumerated(EnumType.STRING)
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    @ElementCollection
-    @MapKeyColumn(name="name")
-    @Column(name = "value")
-    @CollectionTable(schema = "apiato", name="cluster_attribute", joinColumns=@JoinColumn(name="cluster_id"))
-    @JsonPropertyOrder(alphabetic=true)
-    public Map<String, String> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(Map<String, String> attributes) {
-        this.attributes = attributes;
-    }
-
-
-    @OneToMany(mappedBy = "cluster")
-    @JsonManagedReference
-    public Collection<InstanceEntity> getInstances() {
-        return instances;
-    }
-
-    public void setInstances(Collection<InstanceEntity> instances) {
-        this.instances = instances;
-    }
-
 
     @JsonProperty("hosts")
     @Transient
-    public Collection<String> getClusterHosts(){
+    public Collection<String> getClusterHosts() {
 
         Collection<String> hosts = new ArrayList<>();
-        for (InstanceEntity instance : this.instances){
+        for (InstanceEntity instance : this.instances) {
             hosts.add(instance.getHost().getName());
         }
 

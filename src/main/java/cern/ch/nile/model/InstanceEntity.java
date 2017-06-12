@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -11,181 +14,102 @@ import java.util.Collection;
 import java.util.Map;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "instance", schema = "apiato")
 @JsonPropertyOrder(alphabetic = true)
 public class InstanceEntity {
-    private int id;
-    private String owner;
-    private String name;
-    private String eGroup;
-    private Category category;
-    private Date creationDate;
-    private Date expiryDate;
-    private Integer size;
-    private Integer noConnections;
-    private String project;
-    private String description;
-    private String version;
-    private State state;
-    private Status status;
-    private InstanceEntity instanceByMasterInstanceId;
-    private InstanceEntity instanceBySlaveInstanceId;
-    private HostEntity host;
-    private ClusterEntity cluster;
-    private Collection<VolumeEntity> volumes;
-    private Map<String, String> attributes;
-
     @Id
     @Column(name = "instance_id")
     @JsonProperty("instance_id")
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int instanceId) {
-        this.id = instanceId;
-    }
+    private int id;
 
     @Basic
-    @Column(name = "owner")
     @JsonProperty("username")
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
+    private String owner;
 
     @Basic
-    @Column(name = "name")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String name;
 
     @Basic
     @Column(name = "e_group")
     @JsonProperty("e_group")
-    public String geteGroup() {
-        return eGroup;
-    }
-
-    public void seteGroup(String eGroup) {
-        this.eGroup = eGroup;
-    }
+    private String eGroup;
 
     @Basic
-    @Column(name = "category")
     @Enumerated(EnumType.STRING)
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+    private Category category;
 
     @Basic
     @Column(name = "creation_date")
     @JsonIgnore
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
+    private Date creationDate;
 
     @Basic
     @Column(name = "expiry_date")
     @JsonIgnore
-    public Date getExpiryDate() {
-        return expiryDate;
-    }
-
-    public void setExpiryDate(Date expiryDate) {
-        this.expiryDate = expiryDate;
-    }
+    private Date expiryDate;
 
     @Basic
-    @Column(name = "size")
     @JsonIgnore
-    public Integer getSize() {
-        return size;
-    }
-
-    public void setSize(Integer size) {
-        this.size = size;
-    }
+    private Integer size;
 
     @Basic
     @Column(name = "no_connections")
     @JsonIgnore
-    public Integer getNoConnections() {
-        return noConnections;
-    }
-
-    public void setNoConnections(Integer noConnections) {
-        this.noConnections = noConnections;
-    }
+    private Integer noConnections;
 
     @Basic
-    @Column(name = "project")
-    public String getProject() {
-        return project;
-    }
-
-    public void setProject(String project) {
-        this.project = project;
-    }
+    private String project;
 
     @Basic
-    @Column(name = "description")
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    private String description;
 
     @Basic
-    @Column(name = "version")
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
+    private String version;
 
     @Basic
-    @Column(name = "state")
     @Enumerated(EnumType.STRING)
     @JsonIgnore
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
+    private State state;
 
     @Basic
-    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     @JsonIgnore
-    public Status getStatus() {
-        return status;
-    }
+    private Status status;
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+    @ManyToOne
+    @JoinColumn(name = "master_instance_id", referencedColumnName = "instance_id")
+    @JsonIgnore
+    private InstanceEntity instanceByMasterInstanceId;
+
+    @ManyToOne
+    @JoinColumn(name = "slave_instance_id", referencedColumnName = "instance_id")
+    @JsonIgnore
+    private InstanceEntity instanceBySlaveInstanceId;
+
+    @ManyToOne
+    @JoinColumn(name = "host_id", referencedColumnName = "host_id")
+    @JsonIgnore
+    private HostEntity host;
+
+    @ManyToOne
+    @JoinColumn(name = "cluster_id", referencedColumnName = "cluster_id")
+    @JsonBackReference
+    private ClusterEntity cluster;
+
+    @OneToMany
+    @JoinColumn(name = "instance_id", referencedColumnName = "instance_id")
+    private Collection<VolumeEntity> volumes;
+
+    @ElementCollection
+    @MapKeyColumn(name = "name")
+    @Column(name = "value")
+    @CollectionTable(schema = "apiato", name = "instance_attribute", joinColumns = @JoinColumn(name = "instance_id"))
+    @JsonPropertyOrder(alphabetic = true)
+    private Map<String, String> attributes;
+
 
     @Override
     public boolean equals(Object o) {
@@ -232,71 +156,4 @@ public class InstanceEntity {
         return result;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "master_instance_id", referencedColumnName = "instance_id")
-    @JsonIgnore
-    public InstanceEntity getInstanceByMasterInstanceId() {
-        return instanceByMasterInstanceId;
-    }
-
-    public void setInstanceByMasterInstanceId(InstanceEntity instanceByMasterInstanceId) {
-        this.instanceByMasterInstanceId = instanceByMasterInstanceId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "slave_instance_id", referencedColumnName = "instance_id")
-    @JsonIgnore
-    public InstanceEntity getInstanceBySlaveInstanceId() {
-        return instanceBySlaveInstanceId;
-    }
-
-    public void setInstanceBySlaveInstanceId(InstanceEntity instanceBySlaveInstanceId) {
-        this.instanceBySlaveInstanceId = instanceBySlaveInstanceId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "host_id", referencedColumnName = "host_id")
-    @JsonIgnore
-    public HostEntity getHost() {
-        return host;
-    }
-
-    public void setHost(HostEntity host) {
-        this.host = host;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "cluster_id", referencedColumnName = "cluster_id")
-    @JsonBackReference
-    public ClusterEntity getCluster() {
-        return cluster;
-    }
-
-    public void setCluster(ClusterEntity cluster) {
-        this.cluster = cluster;
-    }
-
-
-    @OneToMany
-    @JoinColumn(name = "instance_id", referencedColumnName = "instance_id")
-    public Collection<VolumeEntity> getVolumes() {
-        return volumes;
-    }
-
-    public void setVolumes(Collection<VolumeEntity> volumes) {
-        this.volumes = volumes;
-    }
-
-    @ElementCollection
-    @MapKeyColumn(name = "name")
-    @Column(name = "value")
-    @CollectionTable(schema = "apiato", name = "instance_attribute", joinColumns = @JoinColumn(name = "instance_id"))
-    @JsonPropertyOrder(alphabetic = true)
-    public Map<String, String> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(Map<String, String> attributes) {
-        this.attributes = attributes;
-    }
 }

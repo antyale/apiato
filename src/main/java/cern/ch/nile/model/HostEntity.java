@@ -2,48 +2,33 @@ package cern.ch.nile.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "host", schema = "apiato")
-@JsonPropertyOrder(alphabetic=true)
+@JsonPropertyOrder(alphabetic = true)
 public class HostEntity {
-    private int id;
-    private String name;
-    private int memory;
-    private Collection<InstanceEntity> instances;
-
     @Id
     @Column(name = "host_id")
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int hostId) {
-        this.id = hostId;
-    }
+    private int id;
 
     @Basic
-    @Column(name = "name")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String name;
 
     @Basic
-    @Column(name = "memory")
-    public int getMemory() {
-        return memory;
-    }
+    private int memory;
 
-    public void setMemory(int memory) {
-        this.memory = memory;
-    }
+    @OneToMany(mappedBy = "host")
+    @JsonIgnore
+    private Collection<InstanceEntity> instances;
 
     @Override
     public boolean equals(Object o) {
@@ -67,13 +52,4 @@ public class HostEntity {
         return result;
     }
 
-    @OneToMany(mappedBy = "host")
-    @JsonIgnore
-    public Collection<InstanceEntity> getInstances() {
-        return instances;
-    }
-
-    public void setInstances(Collection<InstanceEntity> instances) {
-        this.instances = instances;
-    }
 }

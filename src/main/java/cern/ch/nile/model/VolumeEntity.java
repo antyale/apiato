@@ -2,96 +2,59 @@ package cern.ch.nile.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "volume", schema = "apiato")
 @JsonPropertyOrder(alphabetic=true)
 public class VolumeEntity {
-    private int id;
-    private String fileMode;
-    private String owner;
-    private String group;
-    private String server;
-    private String mountOptions;
-    private String mountingPath;
-    private int volumeTypeId;
-    private int instanceId;
 
     @Id
     @Column(name = "volume_id")
     @JsonProperty("volume_id")
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int volumeId) {
-        this.id = volumeId;
-    }
+    private int id;
 
     @Basic
     @Column(name = "file_mode", length=4, columnDefinition = "bpchar")
     @JsonProperty("file_mode")
-    public String getFileMode() {
-        return fileMode;
-    }
-
-    public void setFileMode(String fileMode) {
-        this.fileMode = fileMode;
-    }
+    private String fileMode;
 
     @Basic
-    @Column(name = "owner")
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
+    private String owner;
 
     @Basic
-    @Column(name = "group")
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
-    }
+    private String group;
 
     @Basic
-    @Column(name = "server")
-    public String getServer() {
-        return server;
-    }
-
-    public void setServer(String server) {
-        this.server = server;
-    }
+    private String server;
 
     @Basic
     @Column(name = "mount_options")
     @JsonProperty("mount_options")
-    public String getMountOptions() {
-        return mountOptions;
-    }
-
-    public void setMountOptions(String mountOptions) {
-        this.mountOptions = mountOptions;
-    }
+    private String mountOptions;
 
     @Basic
     @Column(name = "mounting_path")
     @JsonProperty("mounting_path")
-    public String getMountingPath() {
-        return mountingPath;
-    }
+    private String mountingPath;
 
-    public void setMountingPath(String mountingPath) {
-        this.mountingPath = mountingPath;
-    }
+    @Basic
+    @Column(name = "volume_type_id")
+    @JsonProperty("volume_type_id")
+    private int volumeTypeId;
+
+    @Basic
+    @Column(name = "instance_id")
+    @JsonProperty("instance_id")
+    private int instanceId;
+
 
     @Override
     public boolean equals(Object o) {
@@ -131,25 +94,4 @@ public class VolumeEntity {
 //    public Map<String, String> attributes = new HashMap<String, String>();
 
 
-    @Basic
-    @Column(name = "volume_type_id")
-    @JsonProperty("volume_type_id")
-    public int getVolumeTypeId() {
-        return volumeTypeId;
-    }
-
-    public void setVolumeTypeId(int volumeTypeId) {
-        this.volumeTypeId = volumeTypeId;
-    }
-
-    @Basic
-    @Column(name = "instance_id")
-    @JsonProperty("instance_id")
-    public int getInstanceId() {
-        return instanceId;
-    }
-
-    public void setInstanceId(int instanceId) {
-        this.instanceId = instanceId;
-    }
 }
