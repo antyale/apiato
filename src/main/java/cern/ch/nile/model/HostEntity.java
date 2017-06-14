@@ -1,12 +1,14 @@
 package cern.ch.nile.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Null;
 import java.util.Collection;
 
 @Entity
@@ -16,7 +18,9 @@ import java.util.Collection;
 @Table(name = "host", schema = "apiato")
 @JsonPropertyOrder(alphabetic = true)
 public class HostEntity {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "host_id")
     private int id;
 

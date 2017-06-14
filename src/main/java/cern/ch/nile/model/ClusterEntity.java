@@ -24,6 +24,7 @@ import java.util.Map;
 public class ClusterEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cluster_id")
     private int id;
 

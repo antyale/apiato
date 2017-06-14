@@ -40,14 +40,14 @@ public class HostController {
 
     @ApiOperation(value = "Find a host by id")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public HostEntity getVolume(@PathVariable Long id) {
+    public HostEntity getVolume(@PathVariable int id) {
         return hostRepository.findById(id);
     }
 
     @ApiOperation(value = "Delete a host by id")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteVolume(@PathVariable Long id) {
+    public void deleteVolume(@PathVariable int id) {
         hostRepository.delete(id);
     }
 
@@ -65,7 +65,8 @@ public class HostController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Update a host")
-    public HostEntity updateHost(@RequestBody HostEntity input) {
+    public HostEntity updateHost(@PathVariable int id, @RequestBody HostEntity input) {
+        input.setId(id);
         return hostRepository.save(input);
     }
 

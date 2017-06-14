@@ -36,14 +36,14 @@ public class InstanceController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get a instance by id")
-    public InstanceEntity getInstance(@PathVariable Long id) {
+    public InstanceEntity getInstance(@PathVariable int id) {
         return instanceRepository.findById(id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Delete a instance by id")
-    public void deleteInstance(@PathVariable Long id) {
+    public void deleteInstance(@PathVariable int id) {
         instanceRepository.delete(id);
     }
 

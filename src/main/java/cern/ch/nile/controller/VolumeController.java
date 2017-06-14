@@ -16,7 +16,6 @@ import java.util.Collection;
 @RequestMapping("volumes")
 public class VolumeController {
 
-
     @Autowired
     private VolumeRepository volumeRepository;
 
@@ -35,21 +34,22 @@ public class VolumeController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get a volume by id")
-    public VolumeEntity getVolume(@PathVariable Long id) {
+    public VolumeEntity getVolume(@PathVariable int id) {
         return volumeRepository.findById(id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Delete a volume by id")
-    public void deleteVolume(@PathVariable Long id) {
+    public void deleteVolume(@PathVariable int id) {
         volumeRepository.delete(id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Update a volume")
-    public VolumeEntity updateVolume(@RequestBody VolumeEntity input) {
+    public VolumeEntity updateVolume(@PathVariable int id, @RequestBody VolumeEntity input) {
+        input.setId(id);
         return volumeRepository.save(input);
     }
 

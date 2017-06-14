@@ -37,14 +37,14 @@ public class ClusterController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get a cluster by id")
-    public ClusterEntity getClusterById(@PathVariable Long id) {
+    public ClusterEntity getClusterById(@PathVariable int id) {
         return clusterRepository.findById(id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Delete a cluster by id")
-    public void deleteCluster(@PathVariable Long id) {
+    public void deleteCluster(@PathVariable int id) {
         clusterRepository.delete(id);
     }
 

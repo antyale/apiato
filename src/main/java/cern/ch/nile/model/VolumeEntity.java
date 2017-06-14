@@ -1,5 +1,6 @@
 package cern.ch.nile.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
@@ -13,16 +14,17 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Table(name = "volume", schema = "apiato")
-@JsonPropertyOrder(alphabetic=true)
+@JsonPropertyOrder(alphabetic = true)
 public class VolumeEntity {
 
     @Id
     @Column(name = "volume_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("volume_id")
     private int id;
 
     @Basic
-    @Column(name = "file_mode", length=4, columnDefinition = "bpchar")
+    @Column(name = "file_mode", length = 4, columnDefinition = "bpchar")
     @JsonProperty("file_mode")
     private String fileMode;
 
@@ -45,10 +47,10 @@ public class VolumeEntity {
     @JsonProperty("mounting_path")
     private String mountingPath;
 
-    @Basic
-    @Column(name = "volume_type_id")
-    @JsonProperty("volume_type_id")
-    private int volumeTypeId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "volume_type_id")
+    @JsonIgnore
+    private VolumeTypeEntity volumeType;
 
     @Basic
     @Column(name = "instance_id")
@@ -93,5 +95,11 @@ public class VolumeEntity {
 //    @CollectionTable(schema = "apiato", name="volume_attribute", joinColumns=@JoinColumn(name="volume_id"))
 //    public Map<String, String> attributes = new HashMap<String, String>();
 
+    @JsonProperty("volume_type")
+    public String getType()
+
+    {
+        return volumeType.getType();
+    }
 
 }

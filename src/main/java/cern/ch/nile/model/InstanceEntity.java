@@ -22,6 +22,7 @@ import java.util.Map;
 public class InstanceEntity {
     @Id
     @Column(name = "instance_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("instance_id")
     private int id;
 
@@ -110,6 +111,10 @@ public class InstanceEntity {
     @JsonPropertyOrder(alphabetic = true)
     private Map<String, String> attributes;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "instance_type_id")
+    @JsonIgnore
+    private InstanceTypeEntity instanceType;
 
     @Override
     public boolean equals(Object o) {
@@ -155,5 +160,13 @@ public class InstanceEntity {
         result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
+
+    @JsonProperty("volume_type")
+    public String getType()
+
+    {
+        return instanceType.getType();
+    }
+
 
 }
