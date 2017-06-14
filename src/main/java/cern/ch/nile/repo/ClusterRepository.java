@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Repository
 public interface ClusterRepository extends PagingAndSortingRepository<ClusterEntity, Integer> {
-    ClusterEntity findById(int id);
+    ClusterEntity findByClusterId(int id);
 
     ClusterEntity findByName(String clusterName);
 

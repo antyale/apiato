@@ -18,21 +18,24 @@ import javax.persistence.*;
 public class VolumeEntity {
 
     @Id
-    @Column(name = "volume_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("volume_id")
-    private int id;
+    private int volumeId;
 
     @Basic
-    @Column(name = "file_mode", length = 4, columnDefinition = "bpchar")
+    @Column(length = 4)
+    //@Column(name = "file_mode", length = 4, columnDefinition = "bpchar")
     @JsonProperty("file_mode")
     private String fileMode;
 
     @Basic
-    private String owner;
+    @Column(name = "owner")
+    @JsonProperty("owner")
+    private String fileOwner;
 
     @Basic
-    private String group;
+    @JsonProperty("group")
+    private String fileGroup;
 
     @Basic
     private String server;
@@ -65,10 +68,10 @@ public class VolumeEntity {
 
         VolumeEntity that = (VolumeEntity) o;
 
-        if (id != that.id) return false;
+        if (volumeId != that.volumeId) return false;
         if (fileMode != null ? !fileMode.equals(that.fileMode) : that.fileMode != null) return false;
-        if (owner != null ? !owner.equals(that.owner) : that.owner != null) return false;
-        if (group != null ? !group.equals(that.group) : that.group != null) return false;
+        if (fileOwner != null ? !fileOwner.equals(that.fileOwner) : that.fileOwner != null) return false;
+        if (fileGroup != null ? !fileGroup.equals(that.fileGroup) : that.fileGroup != null) return false;
         if (server != null ? !server.equals(that.server) : that.server != null) return false;
         if (mountOptions != null ? !mountOptions.equals(that.mountOptions) : that.mountOptions != null) return false;
         if (mountingPath != null ? !mountingPath.equals(that.mountingPath) : that.mountingPath != null) return false;
@@ -78,10 +81,10 @@ public class VolumeEntity {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = volumeId;
         result = 31 * result + (fileMode != null ? fileMode.hashCode() : 0);
-        result = 31 * result + (owner != null ? owner.hashCode() : 0);
-        result = 31 * result + (group != null ? group.hashCode() : 0);
+        result = 31 * result + (fileOwner != null ? fileOwner.hashCode() : 0);
+        result = 31 * result + (fileGroup != null ? fileGroup.hashCode() : 0);
         result = 31 * result + (server != null ? server.hashCode() : 0);
         result = 31 * result + (mountOptions != null ? mountOptions.hashCode() : 0);
         result = 31 * result + (mountingPath != null ? mountingPath.hashCode() : 0);

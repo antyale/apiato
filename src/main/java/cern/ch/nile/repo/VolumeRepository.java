@@ -16,5 +16,5 @@ public interface VolumeRepository extends PagingAndSortingRepository<VolumeEntit
 
     Collection<VolumeEntity> findAll();
     VolumeEntity findByMountingPath(String mountingPath);
-    VolumeEntity findById(int id);
+    VolumeEntity findByVolumeId(int id);
 }

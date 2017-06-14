@@ -1,6 +1,5 @@
 package cern.ch.nile.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -36,7 +35,7 @@ public class InstanceEntity {
     @Basic
     @Column(name = "e_group")
     @JsonProperty("e_group")
-    private String eGroup;
+    private String egroup;
 
     @Basic
     @Enumerated(EnumType.STRING)
@@ -97,11 +96,12 @@ public class InstanceEntity {
 
     @ManyToOne
     @JoinColumn(name = "cluster_id", referencedColumnName = "cluster_id")
-    @JsonBackReference
+    @JsonIgnore
     private ClusterEntity cluster;
 
     @OneToMany
     @JoinColumn(name = "instance_id", referencedColumnName = "instance_id")
+    @JsonIgnore
     private Collection<VolumeEntity> volumes;
 
     @ElementCollection
@@ -126,7 +126,7 @@ public class InstanceEntity {
         if (id != that.id) return false;
         if (owner != null ? !owner.equals(that.owner) : that.owner != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (eGroup != null ? !eGroup.equals(that.eGroup) : that.eGroup != null) return false;
+        if (egroup != null ? !egroup.equals(that.egroup) : that.egroup != null) return false;
         if (category != null ? !category.equals(that.category) : that.category != null) return false;
         if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) return false;
         if (expiryDate != null ? !expiryDate.equals(that.expiryDate) : that.expiryDate != null) return false;
@@ -147,7 +147,7 @@ public class InstanceEntity {
         int result = id;
         result = 31 * result + (owner != null ? owner.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (eGroup != null ? eGroup.hashCode() : 0);
+        result = 31 * result + (egroup != null ? egroup.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);
         result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
         result = 31 * result + (expiryDate != null ? expiryDate.hashCode() : 0);
@@ -161,7 +161,7 @@ public class InstanceEntity {
         return result;
     }
 
-    @JsonProperty("volume_type")
+    @JsonProperty("type")
     public String getType()
 
     {

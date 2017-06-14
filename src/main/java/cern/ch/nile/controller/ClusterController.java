@@ -38,7 +38,7 @@ public class ClusterController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get a cluster by id")
     public ClusterEntity getClusterById(@PathVariable int id) {
-        return clusterRepository.findById(id);
+        return clusterRepository.findByClusterId(id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

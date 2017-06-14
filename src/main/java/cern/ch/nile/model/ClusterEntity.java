@@ -24,9 +24,10 @@ import java.util.Map;
 public class ClusterEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cluster_id")
-    private int id;
+    @JsonProperty("cluster_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int clusterId;
 
     @Basic
     @JsonProperty("username")
@@ -39,15 +40,13 @@ public class ClusterEntity {
     @Basic
     @Column(name = "e_group")
     @JsonProperty("e_group")
-    private String eGroup;
+    private String egroup;
 
     @Basic
-    @Column(name = "creation_date")
     @JsonIgnore
     private Date creationDate;
 
     @Basic
-    @Column(name = "expiry_date")
     @JsonIgnore
     private Date expiryDate;
 
@@ -61,7 +60,6 @@ public class ClusterEntity {
     private String version;
 
     @Basic
-    @Column(name = "lb_alias")
     @JsonProperty("lb_alias")
     private String lbAlias;
 
@@ -83,7 +81,7 @@ public class ClusterEntity {
     private Map<String, String> attributes = new HashMap<String, String>();
 
     @OneToMany(mappedBy = "cluster")
-    @JsonManagedReference
+    @JsonIgnore
     private Collection<InstanceEntity> instances;
 
 
@@ -94,10 +92,10 @@ public class ClusterEntity {
 
         ClusterEntity that = (ClusterEntity) o;
 
-        if (id != that.id) return false;
+        if (clusterId != that.clusterId) return false;
         if (owner != null ? !owner.equals(that.owner) : that.owner != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (eGroup != null ? !eGroup.equals(that.eGroup) : that.eGroup != null) return false;
+        if (egroup != null ? !egroup.equals(that.egroup) : that.egroup != null) return false;
         if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) return false;
         if (expiryDate != null ? !expiryDate.equals(that.expiryDate) : that.expiryDate != null) return false;
         if (project != null ? !project.equals(that.project) : that.project != null) return false;
@@ -110,10 +108,10 @@ public class ClusterEntity {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = clusterId;
         result = 31 * result + (owner != null ? owner.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (eGroup != null ? eGroup.hashCode() : 0);
+        result = 31 * result + (egroup != null ? egroup.hashCode() : 0);
         result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
         result = 31 * result + (expiryDate != null ? expiryDate.hashCode() : 0);
         result = 31 * result + (project != null ? project.hashCode() : 0);
@@ -136,5 +134,20 @@ public class ClusterEntity {
         return hosts;
     }
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "instance_type_id")
+    @JsonIgnore
+    private InstanceTypeEntity instanceType;
 
+    @JsonProperty("type")
+    public String getType()
+
+    {
+        return instanceType.getType();
+    }
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "master_cluster_id")
+    @JsonIgnore
+    private ClusterEntity masterCluster;
 }

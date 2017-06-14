@@ -1,6 +1,5 @@
 package cern.ch.nile.controller;
 
-import cern.ch.nile.model.ClusterEntity;
 import cern.ch.nile.model.VolumeEntity;
 import cern.ch.nile.repo.VolumeRepository;
 import io.swagger.annotations.Api;
@@ -35,7 +34,7 @@ public class VolumeController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get a volume by id")
     public VolumeEntity getVolume(@PathVariable int id) {
-        return volumeRepository.findById(id);
+        return volumeRepository.findByVolumeId(id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -49,7 +48,7 @@ public class VolumeController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Update a volume")
     public VolumeEntity updateVolume(@PathVariable int id, @RequestBody VolumeEntity input) {
-        input.setId(id);
+        input.setVolumeId(id);
         return volumeRepository.save(input);
     }
 
