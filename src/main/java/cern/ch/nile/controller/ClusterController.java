@@ -13,6 +13,7 @@ import java.util.Collection;
 /**
  * Created by aromerom on 26.03.17.
  */
+@CrossOrigin
 @RestController
 @RequestMapping("clusters")
 @Api(value = "clusters", description = "Operations on clusters", tags = "clusters")

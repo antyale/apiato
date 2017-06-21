@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
+@CrossOrigin
 @RestController
 @Api(value = "volumes", description = "Operations on volumes", tags = "volumes")
 @RequestMapping("volumes")
