@@ -15,6 +15,7 @@ import java.util.Collection;
 /**
  * Created by aromerom on 26.03.17.
  */
+@CrossOrigin
 @RestController
 @Api(value = "hosts", description = "Operations on hosts", tags = "hosts")
 @RequestMapping("hosts")
